@@ -30,7 +30,7 @@ func NewClient(base string) Client {
 
 func (c Client) AddHeader(header string, values ...string) (Request, ErrHandler) {
 	if len(values) == 0 {
-		return c.Request, NewError(msgInvalidValue, header, values)
+		return c.Request, NewError(msgInvalidHeaderValue, header, values)
 	}
 
 	value := strings.Join(values, ", ")
