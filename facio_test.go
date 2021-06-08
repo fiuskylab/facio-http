@@ -37,3 +37,72 @@ func TestNewClient(t *testing.T) {
 		})
 	}
 }
+
+type testRequest struct {
+	name string
+	want facio.Request
+	got  facio.Request
+}
+
+func getRequestWithHeaders() []testRequest {
+	var tts []testRequest
+
+	{
+		headerName := "Authorization"
+		headerValue := "Bearer randomtoken"
+
+		want := facio.Request{
+			Headers: map[string]string{
+				headerName: headerValue,
+			},
+		}
+
+		got, _ := facio.
+			NewClient("example.com").
+			AddHeader(headerName, "Bearer randomtoken")
+
+		tt := testRequest{
+			name: "Correct Header",
+			want: want,
+			got:  got,
+		}
+		tts = append(tts, tt)
+	}
+
+	{
+		headerName := "Accept-Encoding"
+		headerValueArr := []string{"gzip", "deflate"}
+		headerValue := "gzip, deflate"
+
+		want := facio.Request{
+			Headers: map[string]string{
+				headerName: headerValue,
+			},
+		}
+
+		got, _ := facio.
+			NewClient("example.com").
+			AddHeader(headerName, headerValueArr...)
+
+		tt := testRequest{
+			name: "Correct Header 2",
+			want: want,
+			got:  got,
+		}
+		tts = append(tts, tt)
+	}
+
+	return tts
+}
+
+func TestNewRequest(t *testing.T) {
+	tts := getRequestWithHeaders()
+
+	for _, tt := range tts {
+		t.Run(tt.name, func(t *testing.T) {
+			if !reflect.DeepEqual(tt.want, tt.got) {
+				t.Errorf("Want: %+v\n Got: %+v", tt.want, tt.got)
+			}
+		})
+	}
+}
