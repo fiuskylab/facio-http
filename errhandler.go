@@ -12,7 +12,7 @@ type ErrHandler struct {
 }
 
 const (
-	msgInvalidValue = `The header %s received an invalid value: %s`
+	msgInvalidHeaderValue = `The header %s received an invalid value: %s`
 )
 
 func NewError(msgTemplate string, values ...interface{}) ErrHandler {
