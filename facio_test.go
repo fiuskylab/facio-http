@@ -19,7 +19,9 @@ func getNewClients() []testClient {
 			name: "Correct Client",
 			want: facio.Client{
 				BaseURL: "example.com",
-				Request: facio.Request{},
+				Request: facio.Request{
+					Headers: make(map[string]string),
+				},
 			},
 			got: facio.NewClient("example.com"),
 		},
@@ -83,6 +85,33 @@ func getRequestWithHeaders() []testRequest {
 		got, _ := facio.
 			NewClient("example.com").
 			AddHeader(headerName, headerValueArr...)
+
+		tt := testRequest{
+			name: "Correct Header 2",
+			want: want,
+			got:  got,
+		}
+		tts = append(tts, tt)
+	}
+
+	{
+		//headerName := "Accept-Encoding"
+		headerValueArr := facio.HeaderMap{
+			"Authorization":   {"Bearer Eyyyy.TOKEN_.AZZDD"},
+			"Accept-Encoding": {"gzip", "deflate"},
+		}
+		headerValue := map[string]string{
+			"Authorization":   "Bearer Eyyyy.TOKEN_.AZZDD",
+			"Accept-Encoding": "gzip, deflate",
+		}
+
+		want := facio.Request{
+			Headers: headerValue,
+		}
+
+		got, _ := facio.
+			NewClient("example.com").
+			AddHeaders(headerValueArr)
 
 		tt := testRequest{
 			name: "Correct Header 2",
