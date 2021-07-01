@@ -14,13 +14,6 @@ func (c Client) AddHeader(header string, values ...string) (Request, ErrHandler)
 	return c.Request, NewNilError()
 }
 
-// Type to store a key with an array of strings
-// HeaderMap{
-// 		"Authorization": { "Bearer EEEYY.TOKEN.AZZ" },
-// 		"Accept-Encoding": { "gzip", "deflate" },
-// }
-type HeaderMap map[string][]string
-
 // Add multiple headers following the structure o HeaderMap
 func (c Client) AddHeaders(hr HeaderMap) (Request, ErrHandler) {
 	for headerName, headerValues := range hr {
