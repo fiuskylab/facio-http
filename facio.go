@@ -2,12 +2,6 @@ package facio
 
 import "strings"
 
-type Request struct {
-	// Headers sent to request
-	// ["Header Name": ["Header Value 1", "Header Value 2"]]
-	Headers map[string]string
-}
-
 // Response struct
 type Response struct{}
 
