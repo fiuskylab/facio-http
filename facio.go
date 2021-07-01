@@ -2,13 +2,6 @@ package facio
 
 import "strings"
 
-// Request struct
-type Client struct {
-	// URL that all requests will be made in
-	BaseURL string
-	Request Request
-}
-
 type Request struct {
 	// Headers sent to request
 	// ["Header Name": ["Header Value 1", "Header Value 2"]]
@@ -17,16 +10,6 @@ type Request struct {
 
 // Response struct
 type Response struct{}
-
-// Create new client
-func NewClient(base string) Client {
-	return Client{
-		BaseURL: base,
-		Request: Request{
-			Headers: make(map[string]string),
-		},
-	}
-}
 
 // Add a single header with multiple values
 func (c Client) AddHeader(header string, values ...string) (Request, ErrHandler) {
