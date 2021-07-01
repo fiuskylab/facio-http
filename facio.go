@@ -2,9 +2,6 @@ package facio
 
 import "strings"
 
-// Response struct
-type Response struct{}
-
 // Add a single header with multiple values
 func (c Client) AddHeader(header string, values ...string) (Request, ErrHandler) {
 	if len(values) == 0 {
