@@ -8,15 +8,10 @@ import "strings"
 // 		"Accept-Encoding": { "gzip", "deflate" },
 // }
 
-//
-const (
-	Authorization = iota
-)
-
 // Headers written into the Client
-type HeaderMap map[string][]string
+type HeaderMap map[header][]string
 
-// Headers "compiled"
+// "Compiled" headers
 type HeaderResult map[string]string
 
 // Building Headers
@@ -25,21 +20,21 @@ func (hm HeaderMap) build() (HeaderResult, ErrHandler) {
 
 	for key, val := range hm {
 		if len(val) == 0 {
-			return HeaderResult{}, NewError(msgInvalidHeaderValue, key, val)
+			return HeaderResult{}, NewError(msgInvalidHeaderValue, key.getHeader(), val)
 		}
-		hr[key] = strings.Join(val, ", ")
+		hr[key.getHeader()] = strings.Join(val, ", ")
 	}
 
 	return hr, NewNilError()
 }
 
 // Add header value to map
-func (hm HeaderMap) add(header string, values ...string) (HeaderMap, ErrHandler) {
+func (hm HeaderMap) add(h header, values ...string) (HeaderMap, ErrHandler) {
 	if len(values) == 0 {
-		return hm, NewError(msgInvalidHeaderValue, header, values)
+		return hm, NewError(msgInvalidHeaderValue, h.getHeader(), values)
 	}
 
-	hm[header] = values
+	hm[h] = values
 
 	return hm, NewNilError()
 }

@@ -20,14 +20,14 @@ func NewClient(base string) Client {
 }
 
 // Add a single header with multiple values
-func (c *Client) AddHeader(header string, values ...string) ErrHandler {
+func (c *Client) AddHeader(h header, values ...string) ErrHandler {
 	if len(values) == 0 {
-		return NewError(msgInvalidHeaderValue, header, values)
+		return NewError(msgInvalidHeaderValue, h.getHeader(), values)
 	}
 
 	var err ErrHandler
 
-	c.HeaderMap, err = c.HeaderMap.add(header, values...)
+	c.HeaderMap, err = c.HeaderMap.add(h, values...)
 
 	if !err.IsNil() {
 		return err
