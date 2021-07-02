@@ -20,8 +20,9 @@ func getNewClients() []testClient {
 			want: facio.Client{
 				BaseURL: "example.com",
 				Request: facio.Request{
-					Headers: make(map[string]string),
+					Headers: make(facio.HeaderResult),
 				},
+				HeaderMap: make(facio.HeaderMap),
 			},
 			got: facio.NewClient("example.com"),
 		},
