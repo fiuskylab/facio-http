@@ -43,12 +43,14 @@ func (c *Client) AddHeaders(hr HeaderMap) ErrHandler {
 	return NewNilError()
 }
 
+// Return Request with built Headers, etc.
+func (c Client) GetRequest() (Request, ErrHandler) {
 	var err ErrHandler
 
-	c.Request.Headers, err = hr.build()
+	c.Request.Headers, err = c.HeaderMap.build()
 
 	if !err.IsNil() {
-		return c.Request, err
+		return Request{}, err
 	}
 
 	return c.Request, NewNilError()
