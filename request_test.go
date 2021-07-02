@@ -17,12 +17,14 @@ func getRequestWithHeaders() []testRequest {
 	var tts []testRequest
 
 	{
-		headerName := "Authorization"
+		// Expects "Authorization"
+		headerName := facio.Authorization
+		headerNameStr := "Authorization"
 		headerValue := "Bearer randomtoken"
 
 		want := facio.Request{
 			Headers: map[string]string{
-				headerName: headerValue,
+				headerNameStr: headerValue,
 			},
 		}
 
@@ -41,13 +43,14 @@ func getRequestWithHeaders() []testRequest {
 	}
 
 	{
-		headerName := "Accept-Encoding"
+		headerName := facio.AcceptEncoding
+		headerNameStr := "Accept-Encoding"
 		headerValueArr := []string{"gzip", "deflate"}
 		headerValue := "gzip, deflate"
 
 		want := facio.Request{
 			Headers: map[string]string{
-				headerName: headerValue,
+				headerNameStr: headerValue,
 			},
 		}
 
@@ -70,8 +73,8 @@ func getRequestWithHeaders() []testRequest {
 	{
 		//headerName := "Accept-Encoding"
 		headerValueArr := facio.HeaderMap{
-			"Authorization":   {"Bearer Eyyyy.TOKEN_.AZZDD"},
-			"Accept-Encoding": {"gzip", "deflate"},
+			facio.Authorization:  {"Bearer Eyyyy.TOKEN_.AZZDD"},
+			facio.AcceptEncoding: {"gzip", "deflate"},
 		}
 		headerValue := map[string]string{
 			"Authorization":   "Bearer Eyyyy.TOKEN_.AZZDD",
