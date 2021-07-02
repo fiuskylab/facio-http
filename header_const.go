@@ -6,41 +6,48 @@ type header uint
 const (
 	// Standard Headers
 
-	AIM                         header = iota // A-IM Header
-	Accept                                    // Accept Header
-	AcceptCharset                             // Accept-Charset Header
-	AcceptEncoding                            // Accept-Encoding Header
-	AcceptLanguage                            // Accept-Language Header
-	AcceptDatetime                            // Accept-Datetime Header
-	AccessControlRequestMethod                // Access-Control-Request-Method Header
-	AccessControlRequestHeaders               // Access-Control-Request-Headers Header
-	Authorization                             // Authorization Header
-	CacheControl                              // Cache-Control Header
-	Connection                                // Connection Header
-	ContentLength                             // Content-Length Header
-	ContentType                               // Content-Type Header
-	Cookie                                    // Cookie Header
-	Date                                      // Date Header
-	Expect                                    // Expect Header
-	Forwarded                                 // Forwarded Header
-	From                                      // From Header
-	Host                                      // Host Header
-	IfMatch                                   // If-Match Header
-	IfModifiedSince                           // If-Modified-Since Header
-	IfNoneMatch                               // If-None-Match Header
-	IfRange                                   // If-Range Header
-	IfUnmodifiedSince                         // If-Unmodified-Since Header
-	MaxForwards                               // Max-Forwards Header
-	Origin                                    // Origin Header
-	Pragma                                    // Pragma Header
-	ProxyAuthorization                        // Proxy-Authorization Header
-	Range                                     // Range Header
-	Referer                                   // Referer Header
-	TE                                        // TE Header
-	UserAgent                                 // User-Agent Header
-	Upgrade                                   // Upgrade Header
-	Via                                       // Via Header
-	Warning                                   // Warning Header
+	// https://datatracker.ietf.org/doc/html/rfc3229#page-33
+	AIM    header = iota // A-IM Header
+	Accept               // Accept Header
+	//AcceptCharset                             // Accept-Charset Header
+	AcceptEncoding                // Accept-Encoding Header
+	AcceptLanguage                // Accept-Language Header
+	AcceptDatetime                // Accept-Datetime Header
+	AccessControlAllowCredentials // Access-Control-Allow-Credentials Header
+	AccessControlAllowHeaders     // Access-Control-Allow-Headers Header
+	AccessControlAllowMethods     // Access-Control-Allow-Methods Header
+	AccessControlAllowOrigin      // Access-Control-Allow-Origin Header
+	AccessControlExposeHeaders    // Access-Control-Expose-Headers Header
+	AccessControlMaxAge           // Access-Control-Max-Age Header
+	AccessControlRequestMethod    // Access-Control-Request-Method Header
+	AccessControlRequestHeaders   // Access-Control-Request-Headers Header
+	Authorization                 // Authorization Header
+	CacheControl                  // Cache-Control Header
+	Connection                    // Connection Header
+	ContentLength                 // Content-Length Header
+	ContentType                   // Content-Type Header
+	Cookie                        // Cookie Header
+	Date                          // Date Header
+	Expect                        // Expect Header
+	Forwarded                     // Forwarded Header
+	From                          // From Header
+	Host                          // Host Header
+	IfMatch                       // If-Match Header
+	IfModifiedSince               // If-Modified-Since Header
+	IfNoneMatch                   // If-None-Match Header
+	IfRange                       // If-Range Header
+	IfUnmodifiedSince             // If-Unmodified-Since Header
+	MaxForwards                   // Max-Forwards Header
+	Origin                        // Origin Header
+	Pragma                        // Pragma Header
+	ProxyAuthorization            // Proxy-Authorization Header
+	Range                         // Range Header
+	Referer                       // Referer Header
+	TE                            // TE Header
+	UserAgent                     // User-Agent Header
+	Upgrade                       // Upgrade Header
+	Via                           // Via Header
+	Warning                       // Warning Header
 
 	// Non-standard Headers
 	Dnt            // Dnt Header
@@ -56,14 +63,27 @@ func (h header) getHeader() string {
 		return "A-IM"
 	case Accept:
 		return "Accept"
-	case AcceptCharset:
-		return "Accept-Charset"
+	//case AcceptCharset:
+	//return "Accept-Charset"
 	case AcceptEncoding:
 		return "Accept-Encoding"
 	case AcceptLanguage:
 		return "Accept-Language"
 	case AcceptDatetime:
 		return "Accept-Datetime"
+
+	case AccessControlAllowCredentials:
+		return "Access-Control-Allow-Credentials"
+	case AccessControlAllowHeaders:
+		return "Access-Control-Allow-Headers"
+	case AccessControlAllowMethods:
+		return "Access-Control-Allow-Methods"
+	case AccessControlAllowOrigin:
+		return "Access-Control-Allow-Origin"
+	case AccessControlExposeHeaders:
+		return "Access-Control-Expose-Headers"
+	case AccessControlMaxAge:
+		return "Access-Control-Max-Age"
 	case AccessControlRequestMethod:
 		return "Access-Control-Request-Method"
 	case AccessControlRequestHeaders:
