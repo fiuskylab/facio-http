@@ -20,6 +20,13 @@ func getNewClients() []testClient {
 			},
 			got: NewClient("example.com"),
 		},
+		{
+			name: "Trimmed URL",
+			want: Client{
+				BaseURL: "example.com",
+			},
+			got: NewClient("example.com/"),
+		},
 	}
 }
 

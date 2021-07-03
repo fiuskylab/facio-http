@@ -6,15 +6,23 @@ type Client struct {
 	BaseURL string
 }
 
-// Create new client
+// NewClient returns new client
 func NewClient(base string) Client {
+	baseBytes := []byte(base)
+	lenBase := len(baseBytes)
+
+	// if base url is http://foo.bar/ it returns http://foo.bar
+	if baseBytes[lenBase-1] == byte('/') {
+		base = string(baseBytes[:lenBase-1])
+	}
+
 	return Client{
 		BaseURL: base,
 	}
 }
 
-// Return Request response
+// Send returns Request response
 // With: Status Code, Body, Header, etc.
 func (c Client) Send(req Request) (Response, ErrHandler) {
-	return req.call()
+	return req.call(c)
 }
