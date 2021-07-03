@@ -1,16 +1,14 @@
-package facio_test
+package facio
 
 import (
 	"reflect"
 	"testing"
-
-	facio "github.com/fiuskylab/facio-http"
 )
 
 type testRequest struct {
 	name string
-	want facio.Request
-	got  facio.Request
+	want Request
+	got  Request
 }
 
 func getRequestWithHeaders() []testRequest {
@@ -18,17 +16,17 @@ func getRequestWithHeaders() []testRequest {
 
 	{
 		// Expects "Authorization"
-		headerName := facio.Authorization
+		headerName := Authorization
 		headerNameStr := "Authorization"
 		headerValue := "Bearer randomtoken"
 
-		want := facio.Request{
+		want := Request{
 			Headers: map[string]string{
 				headerNameStr: headerValue,
 			},
 		}
 
-		client := facio.
+		client :=
 			NewClient("example.com")
 		client.AddHeader(headerName, headerValue)
 
@@ -43,18 +41,18 @@ func getRequestWithHeaders() []testRequest {
 	}
 
 	{
-		headerName := facio.AcceptEncoding
+		headerName := AcceptEncoding
 		headerNameStr := "Accept-Encoding"
 		headerValueArr := []string{"gzip", "deflate"}
 		headerValue := "gzip,deflate"
 
-		want := facio.Request{
+		want := Request{
 			Headers: map[string]string{
 				headerNameStr: headerValue,
 			},
 		}
 
-		client := facio.
+		client :=
 			NewClient("example.com")
 
 		_ = client.
@@ -72,20 +70,20 @@ func getRequestWithHeaders() []testRequest {
 
 	{
 		//headerName := "Accept-Encoding"
-		headerValueArr := facio.HeaderMap{
-			facio.Authorization:  {"Bearer Eyyyy.TOKEN_.AZZDD"},
-			facio.AcceptEncoding: {"gzip", "deflate"},
+		headerValueArr := HeaderMap{
+			Authorization:  {"Bearer Eyyyy.TOKEN_.AZZDD"},
+			AcceptEncoding: {"gzip", "deflate"},
 		}
 		headerValue := map[string]string{
 			"Authorization":   "Bearer Eyyyy.TOKEN_.AZZDD",
 			"Accept-Encoding": "gzip,deflate",
 		}
 
-		want := facio.Request{
+		want := Request{
 			Headers: headerValue,
 		}
 
-		client := facio.
+		client :=
 			NewClient("example.com")
 
 		client.

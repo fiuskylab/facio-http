@@ -1,10 +1,8 @@
-package facio_test
+package facio
 
 import (
 	"reflect"
 	"testing"
-
-	"github.com/fiuskylab/facio-http"
 )
 
 type testHeader struct {
@@ -21,17 +19,17 @@ func getTestHeaders() []testHeader {
 		encs := []string{"application/json", "text/plain"}
 		encsStr := "application/json,text/plain"
 
-		hm := facio.HeaderMap{
-			facio.Authorization:  {token},
-			facio.AcceptEncoding: encs,
+		hm := HeaderMap{
+			Authorization:  {token},
+			AcceptEncoding: encs,
 		}
 
-		want := facio.HeaderResult{
+		want := HeaderResult{
 			"Authorization":   token,
 			"Accept-Encoding": encsStr,
 		}
 
-		client := facio.
+		client :=
 			NewClient("example.com")
 		client.AddHeaders(hm)
 

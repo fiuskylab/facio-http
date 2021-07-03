@@ -1,30 +1,28 @@
-package facio_test
+package facio
 
 import (
 	"reflect"
 	"testing"
-
-	facio "github.com/fiuskylab/facio-http"
 )
 
 type testClient struct {
 	name string
-	want facio.Client
-	got  facio.Client
+	want Client
+	got  Client
 }
 
 func getNewClients() []testClient {
 	return []testClient{
 		{
 			name: "Correct Client",
-			want: facio.Client{
+			want: Client{
 				BaseURL: "example.com",
-				Request: facio.Request{
-					Headers: make(facio.HeaderResult),
+				Request: Request{
+					Headers: make(HeaderResult),
 				},
-				HeaderMap: make(facio.HeaderMap),
+				HeaderMap: make(HeaderMap),
 			},
-			got: facio.NewClient("example.com"),
+			got: NewClient("example.com"),
 		},
 	}
 }
