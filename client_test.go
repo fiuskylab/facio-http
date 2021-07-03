@@ -17,10 +17,6 @@ func getNewClients() []testClient {
 			name: "Correct Client",
 			want: Client{
 				BaseURL: "example.com",
-				Request: Request{
-					Headers: make(HeaderResult),
-				},
-				HeaderMap: make(HeaderMap),
 			},
 			got: NewClient("example.com"),
 		},

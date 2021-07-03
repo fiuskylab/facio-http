@@ -21,18 +21,19 @@ func getRequestWithHeaders() []testRequest {
 		headerValue := "Bearer randomtoken"
 
 		want := Request{
-			Headers: map[string]string{
+			headers: map[string]string{
 				headerNameStr: headerValue,
 			},
-			Endpoint: "/profile",
-			Method:   "GET",
+			headerMap: HeaderMap{
+				headerName: {headerValue},
+			},
+			endpoint: "/profile",
+			method:   "GET",
 		}
 
-		client :=
-			NewClient("example.com")
-		client.AddHeader(headerName, headerValue)
+		got, _ := NewRequest("GET", "/profile")
 
-		got, _ := client.NewRequest("GET", "/profile")
+		got.AddHeader(headerName, headerValue)
 
 		tt := testRequest{
 			name: "Correct Header",
@@ -49,20 +50,19 @@ func getRequestWithHeaders() []testRequest {
 		headerValue := "gzip,deflate"
 
 		want := Request{
-			Headers: map[string]string{
+			headers: map[string]string{
 				headerNameStr: headerValue,
 			},
-			Endpoint: "/profile",
-			Method:   "GET",
+			headerMap: HeaderMap{
+				headerName: headerValueArr,
+			},
+			endpoint: "/profile",
+			method:   "GET",
 		}
 
-		client :=
-			NewClient("example.com")
+		got, _ := NewRequest("GET", "/profile")
 
-		_ = client.
-			AddHeader(headerName, headerValueArr...)
-
-		got, _ := client.NewRequest("GET", "/profile")
+		got.AddHeader(headerName, headerValueArr...)
 
 		tt := testRequest{
 			name: "Correct Header 2",
@@ -84,18 +84,15 @@ func getRequestWithHeaders() []testRequest {
 		}
 
 		want := Request{
-			Headers:  headerValue,
-			Endpoint: "/profile",
-			Method:   "GET",
+			headers:   headerValue,
+			headerMap: headerValueArr,
+			endpoint:  "/profile",
+			method:    "GET",
 		}
 
-		client :=
-			NewClient("example.com")
+		got, _ := NewRequest("GET", "/profile")
 
-		client.
-			AddHeaders(headerValueArr)
-
-		got, _ := client.NewRequest("GET", "/profile")
+		got.AddHeaders(headerValueArr)
 
 		tt := testRequest{
 			name: "Correct Header 2",

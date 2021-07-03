@@ -29,13 +29,11 @@ func getTestHeaders() []testHeader {
 			"Accept-Encoding": encsStr,
 		}
 
-		client :=
-			NewClient("example.com")
-		client.AddHeaders(hm)
+		req, _ := NewRequest("GET", "/profile")
 
-		req, _ := client.NewRequest("GET", "/profile")
+		req.AddHeaders(hm)
 
-		got := req.Headers
+		got := req.headers
 
 		tt := testHeader{
 			name: "Correct Header",
