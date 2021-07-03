@@ -16,12 +16,20 @@ type Request struct {
 	headerMap HeaderMap
 }
 
-	// Endpoint to fetch based on Client's BaseURL
-	Endpoint string
+// Return Request with method and endpoints
+func NewRequest(method, endpoint string) (Request, ErrHandler) {
+	upperMethod, err := checkMethod(method)
 
-	// Method type POST, GET, PATCH, PUT, etc
-	// Not case sensitive
-	Method string
+	if !err.IsNil() {
+		return Request{}, err
+	}
+
+	return Request{
+		method:    upperMethod,
+		endpoint:  endpoint,
+		headers:   make(HeaderResult),
+		headerMap: make(HeaderMap),
+	}, NewNilError()
 }
 
 // Add a single header with multiple values
