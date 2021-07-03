@@ -22,7 +22,7 @@ func (hm HeaderMap) build() (HeaderResult, ErrHandler) {
 		if len(val) == 0 {
 			return HeaderResult{}, NewError(msgInvalidHeaderValue, key.getHeader(), val)
 		}
-		hr[key.getHeader()] = strings.Join(val, ", ")
+		hr[key.getHeader()] = strings.Join(val, ",")
 	}
 
 	return hr, NewNilError()

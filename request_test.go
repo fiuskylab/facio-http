@@ -46,7 +46,7 @@ func getRequestWithHeaders() []testRequest {
 		headerName := facio.AcceptEncoding
 		headerNameStr := "Accept-Encoding"
 		headerValueArr := []string{"gzip", "deflate"}
-		headerValue := "gzip, deflate"
+		headerValue := "gzip,deflate"
 
 		want := facio.Request{
 			Headers: map[string]string{
@@ -78,7 +78,7 @@ func getRequestWithHeaders() []testRequest {
 		}
 		headerValue := map[string]string{
 			"Authorization":   "Bearer Eyyyy.TOKEN_.AZZDD",
-			"Accept-Encoding": "gzip, deflate",
+			"Accept-Encoding": "gzip,deflate",
 		}
 
 		want := facio.Request{
