@@ -46,12 +46,22 @@ func (r *Request) AddHeader(h header, values ...string) ErrHandler {
 		return err
 	}
 
-	return NewNilError()
+	return r.prepareHeaders()
 }
 
 // Add multiple headers following the structure o HeaderMap
 func (r *Request) AddHeaders(hr HeaderMap) ErrHandler {
 	r.headerMap = hr
 
-	return NewNilError()
+	return r.prepareHeaders()
 }
+
+// Build the headers that will be sent to Endpoint
+func (r *Request) prepareHeaders() ErrHandler {
+	headers, err := r.headerMap.build()
+
+	r.headers = headers
+
+	return err
+}
+
