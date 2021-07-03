@@ -2,11 +2,19 @@ package facio
 
 // Store every info about a request to be made
 type Request struct {
+	// Endpoint to fetch based on Client's BaseURL
+	endpoint string
+
+	// Method type POST, GET, PATCH, PUT, etc
+	// Not case sensitive
+	method string
+
 	// Headers sent to request
 	// ["Header Name": ["Header Value 1", "Header Value 2"]]
-	Headers HeaderResult
+	headers HeaderResult
 
 	headerMap HeaderMap
+}
 
 	// Endpoint to fetch based on Client's BaseURL
 	Endpoint string
