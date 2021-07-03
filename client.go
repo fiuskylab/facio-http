@@ -1,5 +1,7 @@
 package facio
 
+import "strings"
+
 // Client responsible to manage Requests and Responses
 type Client struct {
 	// URL that all requests will be made in
@@ -44,14 +46,20 @@ func (c *Client) AddHeaders(hr HeaderMap) ErrHandler {
 }
 
 // Return Request with built Headers, etc.
-func (c Client) GetRequest() (Request, ErrHandler) {
-	var err ErrHandler
-
-	c.Request.Headers, err = c.HeaderMap.build()
+func (c Client) NewRequest(method, endpoint string) (Request, ErrHandler) {
+	headers, err := c.HeaderMap.build()
 
 	if !err.IsNil() {
 		return Request{}, err
 	}
+
+	req := Request{
+		Headers:  headers,
+		Endpoint: endpoint,
+		Method:   strings.ToUpper(method),
+	}
+
+	c.Request = req
 
 	return c.Request, NewNilError()
 }
