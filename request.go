@@ -6,10 +6,36 @@ type Request struct {
 	// ["Header Name": ["Header Value 1", "Header Value 2"]]
 	Headers HeaderResult
 
+	headerMap HeaderMap
+
 	// Endpoint to fetch based on Client's BaseURL
 	Endpoint string
 
 	// Method type POST, GET, PATCH, PUT, etc
 	// Not case sensitive
 	Method string
+}
+
+// Add a single header with multiple values
+func (r *Request) AddHeader(h header, values ...string) ErrHandler {
+	if len(values) == 0 {
+		return NewError(msgInvalidHeaderValue, h.getHeader(), values)
+	}
+
+	var err ErrHandler
+
+	r.headerMap, err = r.headerMap.add(h, values...)
+
+	if !err.IsNil() {
+		return err
+	}
+
+	return NewNilError()
+}
+
+// Add multiple headers following the structure o HeaderMap
+func (r *Request) AddHeaders(hr HeaderMap) ErrHandler {
+	r.headerMap = hr
+
+	return NewNilError()
 }
