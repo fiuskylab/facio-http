@@ -24,13 +24,15 @@ func getRequestWithHeaders() []testRequest {
 			Headers: map[string]string{
 				headerNameStr: headerValue,
 			},
+			Endpoint: "/profile",
+			Method:   "GET",
 		}
 
 		client :=
 			NewClient("example.com")
 		client.AddHeader(headerName, headerValue)
 
-		got, _ := client.GetRequest()
+		got, _ := client.NewRequest("GET", "/profile")
 
 		tt := testRequest{
 			name: "Correct Header",
@@ -50,6 +52,8 @@ func getRequestWithHeaders() []testRequest {
 			Headers: map[string]string{
 				headerNameStr: headerValue,
 			},
+			Endpoint: "/profile",
+			Method:   "GET",
 		}
 
 		client :=
@@ -58,7 +62,7 @@ func getRequestWithHeaders() []testRequest {
 		_ = client.
 			AddHeader(headerName, headerValueArr...)
 
-		got, _ := client.GetRequest()
+		got, _ := client.NewRequest("GET", "/profile")
 
 		tt := testRequest{
 			name: "Correct Header 2",
@@ -80,7 +84,9 @@ func getRequestWithHeaders() []testRequest {
 		}
 
 		want := Request{
-			Headers: headerValue,
+			Headers:  headerValue,
+			Endpoint: "/profile",
+			Method:   "GET",
 		}
 
 		client :=
@@ -89,7 +95,7 @@ func getRequestWithHeaders() []testRequest {
 		client.
 			AddHeaders(headerValueArr)
 
-		got, _ := client.GetRequest()
+		got, _ := client.NewRequest("GET", "/profile")
 
 		tt := testRequest{
 			name: "Correct Header 2",

@@ -33,7 +33,7 @@ func getTestHeaders() []testHeader {
 			NewClient("example.com")
 		client.AddHeaders(hm)
 
-		req, _ := client.GetRequest()
+		req, _ := client.NewRequest("GET", "/profile")
 
 		got := req.Headers
 
