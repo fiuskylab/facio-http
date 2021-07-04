@@ -7,7 +7,7 @@ import (
 
 type testFacio struct {
 	name string
-	want Facio
+	want *Facio
 	got  *Facio
 }
 
@@ -15,14 +15,15 @@ func getTestFacio() []testFacio {
 	var tts []testFacio
 
 	{
-		want := Facio{
+		name := "Default Facio"
+
+		facio := Facio{
 			client: &Client{
 				BaseURL: "example.com",
 			},
 		}
+		want := &facio
 		got := NewDefaultFacio("example.com")
-
-		name := "Default Facio"
 
 		tts = append(tts, testFacio{
 			name: name,
@@ -32,14 +33,15 @@ func getTestFacio() []testFacio {
 	}
 
 	{
-		want := Facio{
-			client: &Client{
-				BaseURL: "example.com",
-			},
-		}
+		name := "New Facio"
+
 		client := NewClient("example.com")
 
-		name := "Default Facio"
+		facio := Facio{
+			client: &client,
+		}
+
+		want := &facio
 
 		got := NewFacio(&client)
 
