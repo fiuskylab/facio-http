@@ -1,7 +1,10 @@
 package facio
 
+import "net/http"
+
 // Store every info about a request to be made
-type Request struct {
+type request struct {
+	client *client
 	// Endpoint to fetch based on Client's BaseURL
 	endpoint string
 
@@ -14,17 +17,19 @@ type Request struct {
 	headers HeaderResult
 
 	headerMap HeaderMap
+
+	req http.Request
 }
 
 // Return Request with method and endpoints
-func NewRequest(method, endpoint string) (Request, ErrHandler) {
+func NewRequest(method, endpoint string) (*request, ErrHandler) {
 	upperMethod, err := checkMethod(method)
 
 	if !err.IsNil() {
-		return Request{}, err
+		return &request{}, err
 	}
 
-	return Request{
+	return &request{
 		method:    upperMethod,
 		endpoint:  endpoint,
 		headers:   make(HeaderResult),
@@ -33,7 +38,7 @@ func NewRequest(method, endpoint string) (Request, ErrHandler) {
 }
 
 // Add a single header with multiple values
-func (r *Request) AddHeader(h header, values ...string) ErrHandler {
+func (r *request) AddHeader(h header, values ...string) ErrHandler {
 	if len(values) == 0 {
 		return NewError(msgInvalidHeaderValue, h.getHeader(), values)
 	}
@@ -50,14 +55,14 @@ func (r *Request) AddHeader(h header, values ...string) ErrHandler {
 }
 
 // Add multiple headers following the structure o HeaderMap
-func (r *Request) AddHeaders(hr HeaderMap) ErrHandler {
+func (r *request) AddHeaders(hr HeaderMap) ErrHandler {
 	r.headerMap = hr
 
 	return r.prepareHeaders()
 }
 
 // Build the headers that will be sent to Endpoint
-func (r *Request) prepareHeaders() ErrHandler {
+func (r *request) prepareHeaders() ErrHandler {
 	headers, err := r.headerMap.build()
 
 	r.headers = headers
@@ -65,3 +70,6 @@ func (r *Request) prepareHeaders() ErrHandler {
 	return err
 }
 
+func (r request) call(client *client) (*response, ErrHandler) {
+	return &response{}, NewNilError()
+}

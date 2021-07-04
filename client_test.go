@@ -7,23 +7,23 @@ import (
 
 type testClient struct {
 	name string
-	want Client
-	got  Client
+	want *client
+	got  *client
 }
 
 func getNewClients() []testClient {
 	return []testClient{
 		{
 			name: "Correct Client",
-			want: Client{
-				BaseURL: "example.com",
+			want: &client{
+				baseURL: "example.com",
 			},
 			got: NewClient("example.com"),
 		},
 		{
 			name: "Trimmed URL",
-			want: Client{
-				BaseURL: "example.com",
+			want: &client{
+				baseURL: "example.com",
 			},
 			got: NewClient("example.com/"),
 		},

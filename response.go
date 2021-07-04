@@ -1,4 +1,4 @@
 package facio
 
 // Response struct
-type Response struct{}
+type response struct{}

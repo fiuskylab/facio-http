@@ -7,8 +7,8 @@ import (
 
 type testRequest struct {
 	name string
-	want Request
-	got  Request
+	want *request
+	got  *request
 }
 
 func getRequestWithHeaders() []testRequest {
@@ -20,7 +20,7 @@ func getRequestWithHeaders() []testRequest {
 		headerNameStr := "Authorization"
 		headerValue := "Bearer randomtoken"
 
-		want := Request{
+		want := &request{
 			headers: map[string]string{
 				headerNameStr: headerValue,
 			},
@@ -49,7 +49,7 @@ func getRequestWithHeaders() []testRequest {
 		headerValueArr := []string{"gzip", "deflate"}
 		headerValue := "gzip,deflate"
 
-		want := Request{
+		want := &request{
 			headers: map[string]string{
 				headerNameStr: headerValue,
 			},
@@ -83,7 +83,7 @@ func getRequestWithHeaders() []testRequest {
 			"Accept-Encoding": "gzip,deflate",
 		}
 
-		want := Request{
+		want := &request{
 			headers:   headerValue,
 			headerMap: headerValueArr,
 			endpoint:  "/profile",

@@ -18,8 +18,8 @@ func getTestFacio() []testFacio {
 		name := "Default Facio"
 
 		facio := Facio{
-			client: &Client{
-				BaseURL: "example.com",
+			client: &client{
+				baseURL: "example.com",
 			},
 		}
 		want := &facio
@@ -38,12 +38,12 @@ func getTestFacio() []testFacio {
 		client := NewClient("example.com")
 
 		facio := Facio{
-			client: &client,
+			client: client,
 		}
 
 		want := &facio
 
-		got := NewFacio(&client)
+		got := NewFacio(client)
 
 		tts = append(tts, testFacio{
 			name: name,

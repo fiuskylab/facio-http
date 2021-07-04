@@ -1,13 +1,13 @@
 package facio
 
 // Client responsible to manage Requests and Responses
-type Client struct {
+type client struct {
 	// URL that all requests will be made in
-	BaseURL string
+	baseURL string
 }
 
 // NewClient returns new client
-func NewClient(base string) Client {
+func NewClient(base string) *client {
 	baseBytes := []byte(base)
 	lenBase := len(baseBytes)
 
@@ -16,13 +16,13 @@ func NewClient(base string) Client {
 		base = string(baseBytes[:lenBase-1])
 	}
 
-	return Client{
-		BaseURL: base,
+	return &client{
+		baseURL: base,
 	}
 }
 
 // Send returns Request response
 // With: Status Code, Body, Header, etc.
-func (c Client) Send(req Request) (Response, ErrHandler) {
+func (c *client) Send(req *request) (*response, ErrHandler) {
 	return req.call(c)
 }
