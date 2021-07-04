@@ -1,9 +1,13 @@
 package facio
 
+import "net/http"
+
 // Client responsible to manage Requests and Responses
 type client struct {
 	// URL that all requests will be made in
 	baseURL string
+
+	httpClient *http.Client
 }
 
 // NewClient returns new client
@@ -11,6 +15,8 @@ func NewClient(base string) (*client, ErrHandler) {
 	var err ErrHandler
 
 	c := &client{}
+
+	c.httpClient = &http.Client{}
 
 	c.baseURL, err = parseURL(base)
 
