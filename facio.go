@@ -12,11 +12,11 @@ func NewFacio(client *client) *Facio {
 }
 
 // NewDefaultFacio returns a Facio
-func NewDefaultFacio(baseURL string) *Facio {
-	client := NewClient(baseURL)
+func NewDefaultFacio(baseURL string) (*Facio, ErrHandler) {
+	client, err := NewClient(baseURL)
 	return &Facio{
 		client: client,
-	}
+	}, err
 }
 
 // SetBaseURL update the URL that Facio makes calls
@@ -28,6 +28,14 @@ func (f *Facio) SetBaseURL(baseURL string) (*Facio, ErrHandler) {
 
 // Request call into certain endpoint based on baseURL defined on client
 func (f *Facio) Request(method, endpoint string, hm HeaderMap) (*response, ErrHandler) {
+	var err ErrHandler
+
+	method, err = checkMethod(method)
+
+	if !err.isNil {
+		return &response{}, err
+	}
+
 	req := &request{
 		client:    f.client,
 		method:    method,
