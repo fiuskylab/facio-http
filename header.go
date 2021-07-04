@@ -1,6 +1,9 @@
 package facio
 
-import "strings"
+import (
+	"net/http"
+	"strings"
+)
 
 // Type to store a key with an array of strings
 // HeaderMap{
@@ -37,4 +40,15 @@ func (hm HeaderMap) add(h header, values ...string) (HeaderMap, ErrHandler) {
 	hm[h] = values
 
 	return hm, NewNilError()
+}
+
+// toHTTPHeader return the map in http.Header type format
+func (hm HeaderMap) toHTTPHeader() http.Header {
+	var httpHeader http.Header
+
+	for key, val := range hm {
+		httpHeader[key.getHeader()] = val
+	}
+
+	return httpHeader
 }
