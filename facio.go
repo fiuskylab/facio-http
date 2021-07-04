@@ -25,3 +25,15 @@ func (f *Facio) SetBaseURL(baseURL string) (*Facio, ErrHandler) {
 
 	return f, err
 }
+
+// Request call into certain endpoint based on baseURL defined on client
+func (f *Facio) Request(method, endpoint string, hm HeaderMap) (*response, ErrHandler) {
+	req := &request{
+		client:    f.client,
+		method:    method,
+		endpoint:  endpoint,
+		headerMap: hm,
+	}
+
+	return req.call()
+}
