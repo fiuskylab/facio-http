@@ -3,7 +3,7 @@ package facio
 import "strings"
 
 // Check if defined method exists
-func checkMethod(method string) (string, ErrHandler) {
+func checkMethod(method string) (string, errHandler) {
 	methodUpper := strings.ToUpper(method)
 
 	// Not the prettiest solution
@@ -16,19 +16,19 @@ func checkMethod(method string) (string, ErrHandler) {
 		methodUpper == "CONNECT" ||
 		methodUpper == "OPTIONS" ||
 		methodUpper == "TRACE" {
-		return methodUpper, NewNilError()
+		return methodUpper, newNilError()
 	}
 
-	return "", NewError(msgInvalidMethod, method)
+	return "", newError(msgInvalidMethod, method)
 }
 
 // parseURL removes the "/" from the end of the string
-func parseURL(baseURL string) (string, ErrHandler) {
+func parseURL(baseURL string) (string, errHandler) {
 	baseBytes := []byte(baseURL)
 	lenBase := len(baseBytes)
 
 	if lenBase == 0 {
-		return "", NewError(msgInvalidURL, baseURL)
+		return "", newError(msgInvalidURL, baseURL)
 	}
 
 	// if base url is http://foo.bar/ it returns http://foo.bar
@@ -36,7 +36,7 @@ func parseURL(baseURL string) (string, ErrHandler) {
 		baseURL = string(baseBytes[:lenBase-1])
 	}
 
-	return baseURL, NewNilError()
+	return baseURL, newNilError()
 }
 
 // parseEndpoint add "/" at the beginning
