@@ -7,10 +7,14 @@ type client struct {
 }
 
 // NewClient returns new client
-func NewClient(base string) *client {
-	return &client{
-		baseURL: base,
-	}
+func NewClient(base string) (*client, ErrHandler) {
+	var err ErrHandler
+
+	c := &client{}
+
+	c.baseURL, err = parseURL(base)
+
+	return c, err
 }
 
 // setBaseURL update the baseURL for Facio calls
@@ -25,5 +29,5 @@ func (c *client) setBaseURL(baseURL string) ErrHandler {
 // Send returns Request response
 // With: Status Code, Body, Header, etc.
 func (c *client) Send(req *request) (*response, ErrHandler) {
-	return req.call(c)
+	return req.call()
 }

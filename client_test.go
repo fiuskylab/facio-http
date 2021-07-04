@@ -12,22 +12,34 @@ type testClient struct {
 }
 
 func getNewClients() []testClient {
-	return []testClient{
-		{
-			name: "Correct Client",
-			want: &client{
-				baseURL: "example.com",
-			},
-			got: NewClient("example.com"),
-		},
-		{
-			name: "Trimmed URL",
-			want: &client{
-				baseURL: "example.com",
-			},
-			got: NewClient("example.com/"),
-		},
+	var tts []testClient
+	{
+		name := "Correct Client"
+		want := &client{
+			baseURL: "example.com",
+		}
+		got, _ := NewClient("example.com")
+		tts = append(tts, testClient{
+			name: name,
+			want: want,
+			got:  got,
+		})
 	}
+	{
+		name := "Trimmed URL"
+		want := &client{
+			baseURL: "example.com",
+		}
+		got, _ := NewClient("example.com/")
+
+		tts = append(tts, testClient{
+			name: name,
+			want: want,
+			got:  got,
+		})
+	}
+
+	return tts
 }
 
 func TestNewClient(t *testing.T) {
