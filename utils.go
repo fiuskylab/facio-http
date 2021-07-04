@@ -21,3 +21,19 @@ func checkMethod(method string) (string, ErrHandler) {
 
 	return "", NewError(msgInvalidMethod, method)
 }
+
+func parseURL(baseURL string) (string, ErrHandler) {
+	baseBytes := []byte(baseURL)
+	lenBase := len(baseBytes)
+
+	if lenBase == 0 {
+		return "", NewError(msgInvalidURL, baseURL)
+	}
+
+	// if base url is http://foo.bar/ it returns http://foo.bar
+	if baseBytes[lenBase-1] == byte('/') {
+		baseURL = string(baseBytes[:lenBase-1])
+	}
+
+	return baseURL, NewNilError()
+}

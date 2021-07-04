@@ -8,17 +8,18 @@ type client struct {
 
 // NewClient returns new client
 func NewClient(base string) *client {
-	baseBytes := []byte(base)
-	lenBase := len(baseBytes)
-
-	// if base url is http://foo.bar/ it returns http://foo.bar
-	if baseBytes[lenBase-1] == byte('/') {
-		base = string(baseBytes[:lenBase-1])
-	}
-
 	return &client{
 		baseURL: base,
 	}
+}
+
+// setBaseURL update the baseURL for Facio calls
+func (c *client) setBaseURL(baseURL string) ErrHandler {
+	var err ErrHandler
+
+	c.baseURL, err = parseURL(baseURL)
+
+	return err
 }
 
 // Send returns Request response
