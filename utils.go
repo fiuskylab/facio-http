@@ -22,6 +22,7 @@ func checkMethod(method string) (string, ErrHandler) {
 	return "", NewError(msgInvalidMethod, method)
 }
 
+// parseURL removes the "/" from the end of the string
 func parseURL(baseURL string) (string, ErrHandler) {
 	baseBytes := []byte(baseURL)
 	lenBase := len(baseBytes)
@@ -36,4 +37,15 @@ func parseURL(baseURL string) (string, ErrHandler) {
 	}
 
 	return baseURL, NewNilError()
+}
+
+// parseEndpoint add "/" at the beginning
+func parseEndpoint(endpoint string) string {
+	epBytes := []byte(endpoint)
+	breaker := []byte("/")
+	if epBytes[0] == breaker[0] {
+		return endpoint
+	}
+
+	return string(append(breaker, epBytes...))
 }
