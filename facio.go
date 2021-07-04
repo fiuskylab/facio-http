@@ -18,3 +18,10 @@ func NewDefaultFacio(baseURL string) *Facio {
 		client: client,
 	}
 }
+
+// SetBaseURL update the URL that Facio makes calls
+func (f *Facio) SetBaseURL(baseURL string) (*Facio, ErrHandler) {
+	err := f.client.setBaseURL(baseURL)
+
+	return f, err
+}
