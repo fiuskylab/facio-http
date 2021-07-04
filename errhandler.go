@@ -2,7 +2,7 @@ package facio
 
 import "fmt"
 
-type ErrHandler struct {
+type errHandler struct {
 	// To check is there's an error or not
 	// Unexported to avoid user errors
 	isNil bool
@@ -17,21 +17,21 @@ const (
 	msgInvalidURL         = `The url "%s" is invalid`
 )
 
-func NewError(msgTemplate string, values ...interface{}) ErrHandler {
-	return ErrHandler{
+func newError(msgTemplate string, values ...interface{}) errHandler {
+	return errHandler{
 		isNil: false,
 		Error: fmt.Sprintf(msgTemplate, values...),
 	}
 }
 
 // Create a new nil error
-func NewNilError() ErrHandler {
-	return ErrHandler{
+func newNilError() errHandler {
+	return errHandler{
 		isNil: true,
 	}
 }
 
 // Check if there's an error or not
-func (e ErrHandler) IsNil() bool {
+func (e errHandler) IsNil() bool {
 	return e.isNil
 }
