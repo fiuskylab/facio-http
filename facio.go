@@ -1,56 +1,119 @@
 package facio
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+)
 
-// Facio is the main struct to execute all actions and config the client
-type Facio struct {
-	// Client stores the main config
-	client *client
+// facio is the main struct to execute all actions and config the client
+type facio struct {
+	// Stores Facio's config
+	config *config
+
+	// httpClient Go's official http package
+	httpClient *http.Client
+
+	// Error stores errHandler
+	Error errHandler
 }
 
-// NewFacio returns Facio with given Client
-func NewFacio(client *client) *Facio {
-	return &Facio{client: client}
+// config store
+type config struct {
+	baseURL string
+	Error   errHandler
 }
 
-// NewDefaultFacio returns a Facio
-func NewDefaultFacio(baseURL string) (*Facio, ErrHandler) {
-	client, err := NewClient(baseURL)
-	return &Facio{
-		client: client,
-	}, err
+// NewConfig return a default Config
+func NewConfig(baseURL string) *config {
+	base, err := parseURL(baseURL)
+	return &config{
+		baseURL: base,
+		Error:   err,
+	}
 }
 
-// SetBaseURL update the URL that Facio makes calls
-func (f *Facio) SetBaseURL(baseURL string) (*Facio, ErrHandler) {
-	err := f.client.setBaseURL(baseURL)
-
-	return f, err
+// NewFacio returns a Facio with a given config
+func NewFacio(cfg *config) *facio {
+	return &facio{
+		config:     cfg,
+		httpClient: &http.Client{},
+	}
 }
 
-// Request call into certain endpoint based on baseURL defined on client
-func (f *Facio) Request(method, endpoint string, hm HeaderMap) (*request, ErrHandler) {
-	var err ErrHandler
+type facioRes struct {
+	httpRes    *http.Response
+	Error      errHandler
+	statusHTTP int
+}
 
-	method, err = checkMethod(method)
+type facioReq struct {
+	httpReq *http.Request
+	url     string
+	Error   errHandler
+	method  string
+}
 
-	if !err.isNil {
-		return &request{}, err
+func (f *facio) Get(endpoint string) *facioRes {
+	endpoint = parseEndpoint(endpoint)
+	req := &facioReq{
+		url:    fmt.Sprintf("%s%s", f.config.baseURL, endpoint),
+		method: http.MethodGet,
 	}
 
-	req := &request{
-		client:    f.client,
-		method:    method,
-		endpoint:  parseEndpoint(endpoint),
-		headerMap: hm,
-	}
-
-	req.url = fmt.Sprintf("%s%s", req.client.baseURL, req.endpoint)
-
-	return req, NewNilError()
+	return f.request(req)
 }
 
-// Do the given Request
-func (f *Facio) Do(req *request) (*response, ErrHandler) {
-	return req.call()
+// request execute the given request and return a response
+func (f *facio) request(req *facioReq) *facioRes {
+	var err error
+
+	res := &facioRes{}
+
+	req.httpReq, err = http.NewRequest(req.method, req.url, nil)
+
+	if err != nil {
+		res.Error = errHandler{
+			Error: err.Error(),
+			isNil: false,
+		}
+		return res
+	}
+
+	res.httpRes, err = f.httpClient.Do(req.httpReq)
+
+	if err != nil {
+		res.Error = errHandler{
+			Error: err.Error(),
+			isNil: false,
+		}
+		return res
+	}
+
+	return res
+}
+
+// StatusCode return HTTP status
+func (f *facioRes) StatusCode() int {
+	if f.statusHTTP == 0 {
+		f.statusHTTP = f.httpRes.StatusCode
+		return f.statusHTTP
+	}
+	return f.statusHTTP
+}
+
+// ToStruct unmarshal JSON response into given struct
+func (f *facioRes) ToStruct(i *interface{}) errHandler {
+	err := newNilError()
+
+	dec := json.NewDecoder(f.httpRes.Body)
+
+	errJson := dec.Decode(i)
+
+	if errJson != nil {
+		err.isNil = false
+		err.Error = errJson.Error()
+	}
+
+	return err
 }

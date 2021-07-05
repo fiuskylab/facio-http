@@ -1,14 +1,15 @@
 package facio
 
 import (
+	"net/http"
 	"reflect"
 	"testing"
 )
 
 type testFacio struct {
 	name string
-	want *Facio
-	got  *Facio
+	want interface{}
+	got  interface{}
 }
 
 func getTestFacio() []testFacio {
@@ -17,13 +18,17 @@ func getTestFacio() []testFacio {
 	{
 		name := "Default Facio"
 
-		facio := Facio{
-			client: &client{
-				baseURL: "example.com",
-			},
+		cfg := &config{
+			baseURL: "example.com",
 		}
-		want := &facio
-		got, _ := NewDefaultFacio("example.com")
+
+		facio := &facio{
+			config:     cfg,
+			httpClient: &http.Client{},
+		}
+
+		want := facio
+		got := NewFacio(cfg)
 
 		tts = append(tts, testFacio{
 			name: name,
@@ -31,24 +36,30 @@ func getTestFacio() []testFacio {
 			got:  got,
 		})
 	}
-
 	{
-		name := "New Facio"
+		// Using the public API: http://api.dataatwork.org/v1
+		name := "Get /jobs"
 
-		client, _ := NewClient("example.com")
-
-		facio := Facio{
-			client: client,
-		}
-
-		want := &facio
-
-		got := NewFacio(client)
+		facio := NewFacio(NewConfig("http://api.dataatwork.org/v1"))
+		res := facio.Get("jobs")
 
 		tts = append(tts, testFacio{
 			name: name,
-			want: want,
-			got:  got,
+			want: false,
+			got:  res.Error.isNil,
+		})
+	}
+	{
+		// Using the public API: http://api.dataatwork.org/v1
+		name := "Get expect status 200"
+
+		facio := NewFacio(NewConfig("http://api.dataatwork.org/v1"))
+		res := facio.Get("jobs")
+
+		tts = append(tts, testFacio{
+			name: name,
+			want: http.StatusOK,
+			got:  res.StatusCode(),
 		})
 	}
 	return tts
