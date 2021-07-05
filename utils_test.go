@@ -29,7 +29,7 @@ func getUtilsTests() []testUtils {
 
 	{
 		name := "checkMethod Correct Method - Returned Error"
-		want := NewNilError()
+		want := newNilError()
 
 		_, got := checkMethod("pOsT")
 
@@ -44,7 +44,7 @@ func getUtilsTests() []testUtils {
 
 		name := "checkMethod Incorrect Method - Returned Error"
 		method := "random_method"
-		want := NewError(msgInvalidMethod, method)
+		want := newError(msgInvalidMethod, method)
 
 		_, got := checkMethod(method)
 
@@ -59,7 +59,7 @@ func getUtilsTests() []testUtils {
 }
 
 func TestUtils(t *testing.T) {
-	tts := getRequestWithHeaders()
+	tts := getUtilsTests()
 
 	for _, tt := range tts {
 		t.Run(tt.name, func(t *testing.T) {
