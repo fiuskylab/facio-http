@@ -61,5 +61,31 @@ func TestRequest(t *testing.T) {
 		})
 	}
 
+	{
+		gotR, _ := NewRequest("GET", "https://example.com/")
+		gotR.AddHeader(AcceptEncoding, "application/json")
+
+		tts = append(tts, testCases{
+			name:     "NewRequest - Correct",
+			got:      gotR.Headers[AcceptEncoding.getHeader()],
+			want:     "application/json",
+			testType: Equal,
+		})
+	}
+
+	{
+		gotR, _ := NewRequest("GET", "https://example.com/")
+		headerName := "bar"
+		headerValue := "foo"
+		gotR.AddCustomHeader(headerName, headerValue)
+
+		tts = append(tts, testCases{
+			name:     "NewRequest - Correct",
+			got:      gotR.Headers[headerName],
+			want:     headerValue,
+			testType: Equal,
+		})
+	}
+
 	runTests(t, tts)
 }
