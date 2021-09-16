@@ -53,6 +53,8 @@ const (
 	Dnt            // Dnt Header
 	XRequestedWith // X-Requested-With Header
 	XCSRFToken     // X-CSRF-Token Header
+
+	rand_header // some value for test purposes
 )
 
 // Return the header name as string
@@ -154,4 +156,3 @@ func (h header) getHeader() string {
 		return ""
 	}
 }
-
