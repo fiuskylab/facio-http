@@ -1,18 +1,12 @@
 package facio
 
 import (
-	"reflect"
+	"fmt"
 	"testing"
 )
 
-type testUtils struct {
-	name string
-	want interface{}
-	got  interface{}
-}
-
-func getUtilsTests() []testUtils {
-	var tts []testUtils
+func TestUtils(t *testing.T) {
+	var tts []testCases
 
 	{
 		name := "checkMethod Correct Method - Returned Method"
@@ -20,52 +14,57 @@ func getUtilsTests() []testUtils {
 
 		got, _ := checkMethod("pOsT")
 
-		tts = append(tts, testUtils{
-			name: name,
-			want: want,
-			got:  got,
+		tts = append(tts, testCases{
+			name:     name,
+			want:     want,
+			got:      got,
+			testType: Equal,
 		})
 	}
 
 	{
 		name := "checkMethod Correct Method - Returned Error"
-		want := newNilError()
 
 		_, got := checkMethod("pOsT")
 
-		tts = append(tts, testUtils{
-			name: name,
-			want: want,
-			got:  got,
+		tts = append(tts, testCases{
+			name:     name,
+			got:      got,
+			testType: Nil,
 		})
 	}
 
 	{
-
 		name := "checkMethod Incorrect Method - Returned Error"
 		method := "random_method"
-		want := newError(msgInvalidMethod, method)
+		want := fmt.Errorf(msgInvalidMethod, method)
 
 		_, got := checkMethod(method)
 
-		tts = append(tts, testUtils{
-			name: name,
-			want: want,
-			got:  got,
+		tts = append(tts, testCases{
+			name:     name,
+			want:     want,
+			got:      got,
+			testType: Equal,
 		})
 	}
 
-	return tts
-}
+	{
+		name := "parseEndpoint"
 
-func TestUtils(t *testing.T) {
-	tts := getUtilsTests()
-
-	for _, tt := range tts {
-		t.Run(tt.name, func(t *testing.T) {
-			if !reflect.DeepEqual(tt.want, tt.got) {
-				t.Errorf("Want: %+v\n Got: %+v", tt.want, tt.got)
-			}
+		tts = append(tts, testCases{
+			name:     name,
+			want:     "/endpoint",
+			got:      parseEndpoint("/endpoint"),
+			testType: Equal,
+		})
+		tts = append(tts, testCases{
+			name:     name,
+			want:     "/endpoint",
+			got:      parseEndpoint("endpoint"),
+			testType: Equal,
 		})
 	}
+
+	runTests(t, tts)
 }
