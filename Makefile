@@ -4,5 +4,5 @@ GOCOVER=$(GO) tool cover
 .PHONY: test/cover
 test/cover:
 		$(GOTEST) -v -coverprofile=tmp/coverage.out ./...
-		$(GOCOVER) -func=coverage.out
-		$(GOCOVER) -html=coverage.out
+		$(GOCOVER) -func=tmp/coverage.out
+		$(GOCOVER) -html=tmp/coverage.out
