@@ -13,7 +13,7 @@ func TestRequest(t *testing.T) {
 
 		tts = append(tts, testCases{
 			name:     "NewRequest - Correct",
-			got:      gotR.BaseURL,
+			got:      gotR.baseURL,
 			want:     "https://example.com",
 			testType: Equal,
 		})
@@ -67,7 +67,18 @@ func TestRequest(t *testing.T) {
 
 		tts = append(tts, testCases{
 			name:     "NewRequest - Correct",
-			got:      gotR.Headers[AcceptEncoding.getHeader()],
+			got:      gotR.headers[AcceptEncoding.getHeader()],
+			want:     "application/json",
+			testType: Equal,
+		})
+	}
+	{
+		gotR, _ := NewRequest("GET", "https://example.com/")
+		gotR.AddCustomHeader(AcceptEncoding.getHeader(), "application/json")
+
+		tts = append(tts, testCases{
+			name:     "NewRequest - Correct",
+			got:      gotR.headers[AcceptEncoding.getHeader()],
 			want:     "application/json",
 			testType: Equal,
 		})
@@ -75,14 +86,14 @@ func TestRequest(t *testing.T) {
 
 	{
 		gotR, _ := NewRequest("GET", "https://example.com/")
-		headerName := "bar"
-		headerValue := "foo"
-		gotR.AddCustomHeader(headerName, headerValue)
+		gotR.SetURLForm(map[string][]string{
+			"val": {"foo", "bar"},
+		})
 
 		tts = append(tts, testCases{
 			name:     "NewRequest - Correct",
-			got:      gotR.Headers[headerName],
-			want:     headerValue,
+			got:      gotR.formURL["val"],
+			want:     []string{"foo", "bar"},
 			testType: Equal,
 		})
 	}
